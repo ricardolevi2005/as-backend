@@ -11,12 +11,12 @@ datasource db {
 }
 
 model Event {
-  id Int @id @default(autoincrement())
-  status Boolean @default(false)
-  title String
+  id  Int @id @default(autoincrement())
+  status      Boolean @default(false)
+  title       String
   description String
-  grouped Boolean @default(false)
-  EventGroup EventGroup[]
+  grouped     Boolean @default(false)
+  EventGroup  EventGroup[]
   EventPeople EventPeople[]
 }
 
