@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma } from "@prisma/client";
+  import { PrismaClient, Prisma } from "@prisma/client";
 import * as groups from "./groups";
 
 const prisma = new PrismaClient();
