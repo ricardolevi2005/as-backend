@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+import fs from "fs";
 import cors from "cors";
 import https from "https";
 import http from "http";
@@ -15,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.all("*", requestInterceptor);
 
-app.use('/admin', adminRoutes)
+app.use("/admin", adminRoutes);
 app.use("/", siteRoutes);
 
 const runServer = (port: number, server: http.Server) => {
@@ -26,8 +27,15 @@ const runServer = (port: number, server: http.Server) => {
 
 const regularServer = http.createServer(app);
 if (process.env.NODE_ENV === "production") {
-  // TODO: configurar SSL
-  // TODO: rodar server na 80 e na 443
+  const options = {
+    key: fs.readFileSync(process.env.SSS_KEY as string),
+    cert: fs.readFileSync(process.env.SSS_CERT as string),
+  };
+
+  const secServer = https.createServer(options, app);
+
+  runServer(80, regularServer);
+  runServer(443, secServer);
 } else {
   const serverPort: number = process.env.PORT
     ? parseInt(process.env.PORT)
